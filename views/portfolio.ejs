@@ -447,13 +447,16 @@
                   day: "numeric",
                   month: "long",
                   year: "numeric",
+                  timeZone: "Europe/Paris",
                 });
                 const timeStr = d.toLocaleTimeString("fr-FR", {
                   hour: "2-digit",
                   minute: "2-digit",
+                  timeZone: "Europe/Paris",
                 });
                 const dayStr = d.toLocaleDateString("fr-FR", {
                   weekday: "short",
+                  timeZone: "Europe/Paris",
                 });
                 const isHome = match.homeTeam.name.toLowerCase().includes('paris') || match.homeTeam.name.toLowerCase().includes('psg');
                 const opponent = isHome ? match.awayTeam.name : match.homeTeam.name;

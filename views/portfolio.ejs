@@ -349,21 +349,20 @@
                 </p>
 
                 <% if (project.loomVideo) { 
-                  // Extraire l'ID de la vidéo Loom depuis l'URL
-                  var loomUrl = project.loomVideo;
-                  var loomId = null;
-                  var embedUrl = loomUrl;
-                  
-                  // Chercher l'ID dans l'URL (format: loom.com/share/ID ou loom.com/embed/ID)
-                  var match = loomUrl.match(/loom\.com\/(?:share|embed)\/([a-zA-Z0-9]+)/);
-                  if (match && match[1]) {
-                    loomId = match[1];
-                    embedUrl = 'https://www.loom.com/embed/' + loomId;
-                  }
-                  
-                  // Échapper les caractères spéciaux pour JavaScript
-                  var safeTitle = project.title.replace(/'/g, "\\'").replace(/"/g, '\\"');
-                  var safeEmbedUrl = embedUrl.replace(/'/g, "\\'").replace(/"/g, '\\"');
+                  try {
+                    // Extraire l'ID de la vidéo Loom depuis l'URL
+                    var loomUrl = String(project.loomVideo || '');
+                    var embedUrl = loomUrl;
+                    
+                    // Chercher l'ID dans l'URL (format: loom.com/share/ID ou loom.com/embed/ID)
+                    var match = loomUrl.match(/loom\.com\/(?:share|embed)\/([a-zA-Z0-9]+)/);
+                    if (match && match[1]) {
+                      embedUrl = 'https://www.loom.com/embed/' + match[1];
+                    }
+                    
+                    // Échapper les caractères spéciaux pour JavaScript
+                    var safeTitle = String(project.title || '').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, ' ');
+                    var safeEmbedUrl = String(embedUrl).replace(/'/g, "\\'").replace(/"/g, '\\"');
                 %>
                 <div class="mb-4">
                   <button
@@ -377,7 +376,11 @@
                     <span>Voir la vidéo Loom</span>
                   </button>
                 </div>
-                <% } %>
+                <% 
+                  } catch(e) {
+                    // En cas d'erreur, on continue sans afficher le bouton
+                  }
+                } %>
 
                 <div class="flex flex-wrap gap-2 mb-4">
                   <% project.domains.forEach(function(domain) { %>
@@ -780,28 +783,36 @@
 
     // Fonctions pour la modal Loom
     function openLoomModal(embedUrl, title) {
-      var modal = document.getElementById("loom-modal");
-      var iframe = document.getElementById("loom-iframe");
-      var titleEl = document.getElementById("loom-modal-title");
+      try {
+        var modal = document.getElementById("loom-modal");
+        var iframe = document.getElementById("loom-iframe");
+        var titleEl = document.getElementById("loom-modal-title");
 
-      if (modal && iframe && titleEl) {
-        iframe.src = embedUrl;
-        titleEl.textContent = title;
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-        document.body.style.overflow = "hidden";
+        if (modal && iframe && titleEl) {
+          iframe.src = embedUrl;
+          titleEl.textContent = title || "";
+          modal.classList.remove("hidden");
+          modal.classList.add("flex");
+          document.body.style.overflow = "hidden";
+        }
+      } catch (e) {
+        console.error("Erreur ouverture modal Loom:", e);
       }
     }
 
     function closeLoomModal() {
-      var modal = document.getElementById("loom-modal");
-      var iframe = document.getElementById("loom-iframe");
+      try {
+        var modal = document.getElementById("loom-modal");
+        var iframe = document.getElementById("loom-iframe");
 
-      if (modal && iframe) {
-        modal.classList.add("hidden");
-        modal.classList.remove("flex");
-        iframe.src = "";
-        document.body.style.overflow = "";
+        if (modal && iframe) {
+          modal.classList.add("hidden");
+          modal.classList.remove("flex");
+          iframe.src = "";
+          document.body.style.overflow = "";
+        }
+      } catch (e) {
+        console.error("Erreur fermeture modal Loom:", e);
       }
     }
 

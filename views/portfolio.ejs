@@ -349,19 +349,30 @@
                 </p>
 
                 <% if (project.loomVideo) { 
-                  try {
-                    // Extraire l'ID de la vidéo Loom depuis l'URL
-                    var loomUrl = String(project.loomVideo || '');
-                    var embedUrl = loomUrl;
-                    
+                  // Extraire l'ID de la vidéo Loom depuis l'URL
+                  var loomUrl = String(project.loomVideo || '').trim();
+                  var embedUrl = '';
+                  
+                  if (loomUrl) {
                     // Chercher l'ID dans l'URL (format: loom.com/share/ID ou loom.com/embed/ID)
+                    // Gérer aussi les URLs avec paramètres comme ?sid=...
                     var match = loomUrl.match(/loom\.com\/(?:share|embed)\/([a-zA-Z0-9]+)/);
                     if (match && match[1]) {
                       embedUrl = 'https://www.loom.com/embed/' + match[1];
+                    } else {
+                      // Si pas de match, utiliser l'URL telle quelle si elle contient déjà /embed/
+                      if (loomUrl.includes('/embed/')) {
+                        embedUrl = loomUrl;
+                      } else if (loomUrl.includes('/share/')) {
+                        // Convertir /share/ en /embed/
+                        embedUrl = loomUrl.replace('/share/', '/embed/').split('?')[0];
+                      }
                     }
-                    
+                  }
+                  
+                  if (embedUrl) {
                     // Échapper les caractères spéciaux pour JavaScript
-                    var safeTitle = String(project.title || '').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, ' ');
+                    var safeTitle = String(project.title || '').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, ' ').replace(/\r/g, '');
                     var safeEmbedUrl = String(embedUrl).replace(/'/g, "\\'").replace(/"/g, '\\"');
                 %>
                 <div class="mb-4">
@@ -376,11 +387,8 @@
                     <span>Voir la vidéo Loom</span>
                   </button>
                 </div>
-                <% 
-                  } catch(e) {
-                    // En cas d'erreur, on continue sans afficher le bouton
-                  }
-                } %>
+                <% } %>
+                <% } %>
 
                 <div class="flex flex-wrap gap-2 mb-4">
                   <% project.domains.forEach(function(domain) { %>
@@ -746,6 +754,8 @@
               frameborder="0"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowfullscreen
+              loading="lazy"
+              style="border: none;"
             ></iframe>
           </div>
         </div>
@@ -788,15 +798,35 @@
         var iframe = document.getElementById("loom-iframe");
         var titleEl = document.getElementById("loom-modal-title");
 
-        if (modal && iframe && titleEl) {
-          iframe.src = embedUrl;
-          titleEl.textContent = title || "";
-          modal.classList.remove("hidden");
-          modal.classList.add("flex");
-          document.body.style.overflow = "hidden";
+        if (!modal || !iframe || !titleEl) {
+          console.error("Éléments modal non trouvés");
+          return;
         }
+
+        // Vérifier que l'URL est valide
+        if (!embedUrl || embedUrl.trim() === '') {
+          console.error("URL Loom invalide:", embedUrl);
+          return;
+        }
+
+        // S'assurer que l'URL est complète
+        if (!embedUrl.startsWith('http')) {
+          embedUrl = 'https://' + embedUrl;
+        }
+
+        // Définir le titre
+        titleEl.textContent = title || "Vidéo Loom";
+        
+        // Charger l'iframe seulement quand la modal est ouverte
+        iframe.src = embedUrl;
+        
+        // Afficher la modal
+        modal.classList.remove("hidden");
+        modal.classList.add("flex");
+        document.body.style.overflow = "hidden";
       } catch (e) {
         console.error("Erreur ouverture modal Loom:", e);
+        alert("Impossible de charger la vidéo Loom. Veuillez réessayer.");
       }
     }
 

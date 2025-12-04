@@ -19,6 +19,8 @@ const projects = [
     date: "12/02/2025",
     tools: "Google Sheets, ChatGPT, Looker Studio, Canva",
     loomVideo: "https://www.loom.com/share/49ce4410ce5e4cee8b911aaa7e432923",
+    loomEmbedId: "49ce4410ce5e4cee8b911aaa7e432923",
+    loomAspectRatio: 56.25,
     sections: {
       intro:
         "Le projet Histia visait à automatiser la collecte et la synthèse d'information pour des études de marché plus rapides.",
@@ -46,6 +48,8 @@ const projects = [
     date: "12/02/2025",
     tools: "Miro, Google Sheets, Canva, ChatGPT",
     loomVideo: "https://www.loom.com/share/3d0c099b8bdd4e5d834ac31c8444c84a?sid=298cadad-54f8-4649-8fe6-d4e76a267b11",
+    loomEmbedId: "3d0c099b8bdd4e5d834ac31c8444c84a",
+    loomAspectRatio: 66.66666666666666,
     sections: {
       intro:
         "Le Geniathon Malt est un hackathon intensif où nous devions co-construire une solution innovante et réaliste.",
@@ -72,6 +76,8 @@ const projects = [
     date: "13/05/2025",
     tools: "Google Sheets, ChatGPT, Looker Studio",
     loomVideo: "https://www.loom.com/share/12eec551afde453494373193603844cb",
+    loomEmbedId: "12eec551afde453494373193603844cb",
+    loomAspectRatio: 56.25,
     sections: {
       intro:
         "Mission Carrefour : identifier les opportunités de négociation via la centralisation des achats non-alimentaires dans le G6.",

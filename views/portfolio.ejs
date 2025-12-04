@@ -348,46 +348,22 @@
                   <%= project.summary %>
                 </p>
 
-                <% if (project.loomVideo) { 
-                  // Extraire l'ID de la vidéo Loom depuis l'URL
-                  var loomUrl = String(project.loomVideo || '').trim();
-                  var embedUrl = '';
-                  
-                  if (loomUrl) {
-                    // Chercher l'ID dans l'URL (format: loom.com/share/ID ou loom.com/embed/ID)
-                    // Gérer aussi les URLs avec paramètres comme ?sid=...
-                    var match = loomUrl.match(/loom\.com\/(?:share|embed)\/([a-zA-Z0-9]+)/);
-                    if (match && match[1]) {
-                      embedUrl = 'https://www.loom.com/embed/' + match[1];
-                    } else {
-                      // Si pas de match, utiliser l'URL telle quelle si elle contient déjà /embed/
-                      if (loomUrl.includes('/embed/')) {
-                        embedUrl = loomUrl;
-                      } else if (loomUrl.includes('/share/')) {
-                        // Convertir /share/ en /embed/
-                        embedUrl = loomUrl.replace('/share/', '/embed/').split('?')[0];
-                      }
-                    }
-                  }
-                  
-                  if (embedUrl) {
-                    // Échapper les caractères spéciaux pour JavaScript
-                    var safeTitle = String(project.title || '').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, ' ').replace(/\r/g, '');
-                    var safeEmbedUrl = String(embedUrl).replace(/'/g, "\\'").replace(/"/g, '\\"');
+                <% if (project.loomEmbedId) { 
+                  var aspectRatio = project.loomAspectRatio || 56.25;
                 %>
-                <div class="mb-4">
-                  <button
-                    onclick="openLoomModal('<%= safeEmbedUrl %>', '<%= safeTitle %>')"
-                    class="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-white/10 hover:text-white transition"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span>Voir la vidéo Loom</span>
-                  </button>
+                <div class="mb-4 rounded-lg overflow-hidden border border-white/10">
+                  <div style="position: relative; padding-bottom: <%= aspectRatio %>%; height: 0;">
+                    <iframe 
+                      src="https://www.loom.com/embed/<%= project.loomEmbedId %>" 
+                      frameborder="0" 
+                      webkitallowfullscreen 
+                      mozallowfullscreen 
+                      allowfullscreen 
+                      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"
+                      loading="lazy"
+                    ></iframe>
+                  </div>
                 </div>
-                <% } %>
                 <% } %>
 
                 <div class="flex flex-wrap gap-2 mb-4">
@@ -713,54 +689,6 @@
       </div>
     </footer>
 
-    <!-- Modal pour les vidéos Loom -->
-    <div
-      id="loom-modal"
-      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm"
-      onclick="closeLoomModal()"
-    >
-      <div
-        class="relative w-full max-w-5xl mx-4 bg-[#030712] rounded-2xl border border-white/10 shadow-2xl"
-        onclick="event.stopPropagation()"
-      >
-        <button
-          onclick="closeLoomModal()"
-          class="absolute -top-12 right-0 text-white hover:text-blue-400 transition-colors"
-          aria-label="Fermer"
-        >
-          <svg
-            class="w-8 h-8"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            ></path>
-          </svg>
-        </button>
-        <div class="p-6">
-          <h3
-            id="loom-modal-title"
-            class="text-2xl font-bold text-white mb-4"
-          ></h3>
-          <div class="relative w-full" style="padding-bottom: 56.25%">
-            <iframe
-              id="loom-iframe"
-              class="absolute top-0 left-0 w-full h-full rounded-lg"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-              loading="lazy"
-              style="border: none;"
-            ></iframe>
-          </div>
-        </div>
-      </div>
-    </div>
   </body>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -791,67 +719,6 @@
       });
     });
 
-    // Fonctions pour la modal Loom
-    function openLoomModal(embedUrl, title) {
-      try {
-        var modal = document.getElementById("loom-modal");
-        var iframe = document.getElementById("loom-iframe");
-        var titleEl = document.getElementById("loom-modal-title");
-
-        if (!modal || !iframe || !titleEl) {
-          console.error("Éléments modal non trouvés");
-          return;
-        }
-
-        // Vérifier que l'URL est valide
-        if (!embedUrl || embedUrl.trim() === '') {
-          console.error("URL Loom invalide:", embedUrl);
-          return;
-        }
-
-        // S'assurer que l'URL est complète
-        if (!embedUrl.startsWith('http')) {
-          embedUrl = 'https://' + embedUrl;
-        }
-
-        // Définir le titre
-        titleEl.textContent = title || "Vidéo Loom";
-        
-        // Charger l'iframe seulement quand la modal est ouverte
-        iframe.src = embedUrl;
-        
-        // Afficher la modal
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-        document.body.style.overflow = "hidden";
-      } catch (e) {
-        console.error("Erreur ouverture modal Loom:", e);
-        alert("Impossible de charger la vidéo Loom. Veuillez réessayer.");
-      }
-    }
-
-    function closeLoomModal() {
-      try {
-        var modal = document.getElementById("loom-modal");
-        var iframe = document.getElementById("loom-iframe");
-
-        if (modal && iframe) {
-          modal.classList.add("hidden");
-          modal.classList.remove("flex");
-          iframe.src = "";
-          document.body.style.overflow = "";
-        }
-      } catch (e) {
-        console.error("Erreur fermeture modal Loom:", e);
-      }
-    }
-
-    // Fermer la modal avec la touche Escape
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        closeLoomModal();
-      }
-    });
   </script>
 </html>
 

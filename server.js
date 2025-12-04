@@ -159,6 +159,11 @@ const fetchPsgMatches = async () => {
 // Route principale
 app.get("/", async (req, res) => {
   const psgMatches = await fetchPsgMatches();
+  // Debug: vérifier que les projets ont bien loomEmbedId
+  console.log("Projets avec loomEmbedId:");
+  projects.forEach(p => {
+    console.log(`  - ${p.title}: ${p.loomEmbedId ? 'OK' : 'MANQUANT'}`);
+  });
   res.render("portfolio", { projects, psgMatches });
 });
 

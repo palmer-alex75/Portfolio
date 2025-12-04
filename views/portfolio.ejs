@@ -348,12 +348,18 @@
                   <%= project.summary %>
                 </p>
 
-                <% if (project.loomEmbedId) { 
+                <% 
+                // Debug: vérifier si loomEmbedId existe
+                // console.log('Project:', project.title, 'loomEmbedId:', project.loomEmbedId);
+                
+                // Afficher le bouton si loomEmbedId existe
+                if (project.loomEmbedId) { 
                   var aspectRatio = project.loomAspectRatio || 56.25;
                   var safeTitle = String(project.title || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
                 %>
                 <div class="mb-4">
                   <button
+                    type="button"
                     onclick="openLoomModal('<%= project.loomEmbedId %>', '<%= aspectRatio %>', '<%= safeTitle %>')"
                     class="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-white/10 hover:text-white transition"
                   >

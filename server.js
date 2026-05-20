@@ -1,11 +1,12 @@
-require("dotenv").config();
 const express = require("express");
 const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const FOOTBALL_API_KEY = process.env.FOOTBALL_API_KEY;
+const FOOTBALL_API_KEY =
+  process.env.FOOTBALL_API_KEY || "56bd3e8b75a2479f980f29b4350f00e7";
 
+// Données projets (reprennent le contenu de Projects.tsx)
 const projects = [
   {
     title: "BDD Histia",
@@ -17,6 +18,7 @@ const projects = [
     logo: "/images/histia-logo-2.jpg",
     date: "12/02/2025",
     tools: "Google Sheets, ChatGPT, Looker Studio, Canva",
+    loomVideo: "https://www.loom.com/share/49ce4410ce5e4cee8b911aaa7e432923",
     loomEmbedId: "49ce4410ce5e4cee8b911aaa7e432923",
     loomAspectRatio: 56.25,
     sections: {
@@ -45,8 +47,9 @@ const projects = [
     logo: "/images/malt-logo.png",
     date: "12/02/2025",
     tools: "Miro, Google Sheets, Canva, ChatGPT",
+    loomVideo: "https://www.loom.com/share/3d0c099b8bdd4e5d834ac31c8444c84a?sid=298cadad-54f8-4649-8fe6-d4e76a267b11",
     loomEmbedId: "3d0c099b8bdd4e5d834ac31c8444c84a",
-    loomAspectRatio: 66.67,
+    loomAspectRatio: 66.66666666666666,
     sections: {
       intro:
         "Le Geniathon Malt est un hackathon intensif où nous devions co-construire une solution innovante et réaliste.",
@@ -67,11 +70,12 @@ const projects = [
     description:
       "Analyse data-driven des achats non-alimentaires G6 pour révéler des leviers d'économies.",
     summary:
-      "Nettoyage de 12 fichiers, indicateur stratégique « Enjeux N1 » et dashboard Looker Studio pour guider les négociations.",
+      "Nettoyage de 12 fichiers, indicateur stratégique \"Enjeux N1\" et dashboard Looker Studio pour guider les négociations.",
     domains: ["Travail en équipe", "Data", "Pitch"],
     logo: "/images/carrefour-logo.png",
     date: "13/05/2025",
     tools: "Google Sheets, ChatGPT, Looker Studio",
+    loomVideo: "https://www.loom.com/share/12eec551afde453494373193603844cb",
     loomEmbedId: "12eec551afde453494373193603844cb",
     loomAspectRatio: 56.25,
     sections: {
@@ -79,7 +83,7 @@ const projects = [
         "Mission Carrefour : identifier les opportunités de négociation via la centralisation des achats non-alimentaires dans le G6.",
       approach: [
         "Nettoyage/structuration des données (12 fichiers Excel : prix, quantités, fournisseurs).",
-        "Création de l'indicateur « Enjeux Niveau 1 » pour estimer les économies au meilleur prix observé.",
+        "Création de l'indicateur \"Enjeux Niveau 1\" pour estimer les économies au meilleur prix observé.",
         "Dashboard Looker Studio avec KPI, filtres dynamiques et visualisations actionnables.",
       ],
       results: [
@@ -91,38 +95,80 @@ const projects = [
   },
 ];
 
+// Configuration d'Express + EJS
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+
+// Fichiers statiques (si tu veux ajouter des images, CSS custom, etc.)
 app.use(express.static(path.join(__dirname, "public")));
 
 const fetchPsgMatches = async () => {
-  if (!FOOTBALL_API_KEY) {
-    console.warn("⚠️  FOOTBALL_API_KEY manquante dans .env");
-    return [];
-  }
   try {
-    const response = await fetch(
-      "https://api.football-data.org/v4/teams/524/matches?status=SCHEDULED",
-      { headers: { "X-Auth-Token": FOOTBALL_API_KEY } }
-    );
-    if (!response.ok) throw new Error(`API ${response.status}`);
-    const { matches = [] } = await response.json();
+    const url =
+      "https://api.football-data.org/v4/teams/524/matches?status=SCHEDULED";
+    
+    const response = await fetch(url, {
+      headers: {
+        "X-Auth-Token": FOOTBALL_API_KEY,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("❌ Erreur API PSG:", response.status, errorText);
+      throw new Error(`API Error: ${response.status} - ${errorText}`);
+    }
+
+    const data = await response.json();
+    const matches = data.matches || [];
+    
+    if (matches.length === 0) {
+      console.log("⚠️ Aucun match programmé pour le PSG");
+      return [];
+    }
+    
+    // Filtrer pour ne garder que les matchs futurs (au cas où certains seraient encore SCHEDULED mais passés)
     const now = new Date();
-    return matches
-      .filter((m) => new Date(m.utcDate) > now)
+    const futureMatches = matches.filter(match => {
+      const matchDate = new Date(match.utcDate);
+      return matchDate > now;
+    });
+    
+    if (futureMatches.length === 0) {
+      console.log("⚠️ Aucun match futur trouvé pour le PSG");
+      return [];
+    }
+    
+    // Trier par date croissante et prendre les 3 prochains matchs
+    const sortedMatches = futureMatches
       .sort((a, b) => new Date(a.utcDate) - new Date(b.utcDate))
       .slice(0, 3);
-  } catch (err) {
-    console.error("❌ Matchs PSG :", err.message);
+    
+    console.log(`✅ ${sortedMatches.length} prochain(s) match(s) PSG récupéré(s)`);
+    if (sortedMatches.length > 0) {
+      const nextMatchDate = new Date(sortedMatches[0].utcDate);
+      console.log(`   Prochain match: ${nextMatchDate.toLocaleString('fr-FR')}`);
+    }
+    return sortedMatches;
+  } catch (error) {
+    console.error("❌ Erreur récupération matchs PSG:", error.message);
     return [];
   }
 };
 
+// Route principale
 app.get("/", async (req, res) => {
   const psgMatches = await fetchPsgMatches();
+  // Debug: vérifier que les projets ont bien loomEmbedId
+  console.log("Projets avec loomEmbedId:");
+  projects.forEach(p => {
+    console.log(`  - ${p.title}: ${p.loomEmbedId ? 'OK' : 'MANQUANT'}`);
+  });
   res.render("portfolio", { projects, psgMatches });
 });
 
 app.listen(PORT, () => {
-  console.log(`Portfolio en écoute → http://localhost:${PORT}`);
+  console.log(`Portfolio Node.js en écoute sur http://localhost:${PORT}`);
 });
+
+

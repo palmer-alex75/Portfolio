@@ -1,825 +1,715 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Portfolio - Sport x Tech</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      body {
-        background: #030712;
-        color: #f8fafc;
-      }
-    </style>
-  </head>
-  <body class="relative min-h-screen">
-    <div
-      class="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(59,130,246,0.18),transparent_45%),radial-gradient(circle_at_80%_0%,rgba(244,63,94,0.25),transparent_35%),radial-gradient(circle_at_80%_80%,rgba(45,212,191,0.15),transparent_40%)]"
-    ></div>
+<head>
+  <meta charset="UTF-8" />
+  <title>Alexandre Palmer — Data × IA × Sport</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* ── TOKENS ─────────────────────────────── */
+    :root {
+      --navy:    #001f5b;
+      --navy-lt: #0a3080;
+      --red:     #E3000B;
+      --bg:      #f4f5f7;
+      --white:   #ffffff;
+      --border:  rgba(0,0,0,.09);
+      --text:    #111111;
+      --muted:   #666666;
+      --dim:     #999999;
+    }
 
-    <header
-      class="sticky top-0 z-50 border-b border-white/10 bg-[#030712]/80 backdrop-blur"
-    >
-      <div
-        class="container mx-auto flex items-center justify-between px-4 py-4"
-      >
-        <a href="#hero" class="text-2xl font-black tracking-tight">
-          <span
-            class="bg-gradient-to-r from-sky-400 via-blue-500 to-rose-500 bg-clip-text text-transparent"
-            >PALMER</span
-          >
-        </a>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; }
+    html  { scroll-behavior: smooth; }
+    body  {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        <nav class="hidden gap-6 md:flex text-sm font-semibold">
-          <a href="#hero" class="text-slate-400 hover:text-white">Accueil</a>
-          <a href="#about" class="text-slate-400 hover:text-white">Profil</a>
-          <a href="#skills" class="text-slate-400 hover:text-white">Compétences</a>
-          <a href="#projects" class="text-slate-400 hover:text-white">Projets</a>
-          <a href="#psg-matches" class="text-slate-400 hover:text-white">PSG</a>
-          <a href="#contact" class="text-slate-400 hover:text-white">Contact</a>
-        </nav>
+    /* ── TYPE ────────────────────────────────── */
+    .f-disp { font-family: 'Bebas Neue', sans-serif; }
+    .f-ui   { font-family: 'Rajdhani', sans-serif; font-weight: 700; }
+    .f-mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── NAV ─────────────────────────────────── */
+    .nav-item {
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: .72rem; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--muted); transition: color .2s; position: relative;
+    }
+    .nav-item::after {
+      content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+      height: 2px; background: var(--red); transform: scaleX(0); transition: transform .2s;
+    }
+    .nav-item:hover { color: var(--navy); }
+    .nav-item:hover::after { transform: scaleX(1); }
+
+    /* ── LABEL ───────────────────────────────── */
+    .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .6rem; letter-spacing: .4em; text-transform: uppercase;
+      color: var(--red); display: block; margin-bottom: .85rem;
+    }
+
+    /* ── HEADINGS ────────────────────────────── */
+    .h-hero {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 14vw, 11rem);
+      line-height: .88; letter-spacing: -.01em; color: var(--navy);
+    }
+    .h-section {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      line-height: .93; color: var(--navy);
+    }
+
+    /* ── BUTTONS ─────────────────────────────── */
+    .btn-fill {
+      display: inline-flex; align-items: center;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: .78rem; letter-spacing: .16em; text-transform: uppercase;
+      background: var(--navy); color: #fff;
+      padding: .72rem 2rem; border-radius: 5px; border: none; cursor: pointer;
+      transition: background .2s, transform .2s, box-shadow .2s;
+    }
+    .btn-fill:hover { background: var(--navy-lt); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,31,91,.25); }
+
+    .btn-outline {
+      display: inline-flex; align-items: center;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: .78rem; letter-spacing: .16em; text-transform: uppercase;
+      background: transparent; color: var(--navy);
+      padding: .72rem 2rem; border-radius: 5px;
+      border: 2px solid var(--navy); cursor: pointer;
+      transition: background .2s, color .2s;
+    }
+    .btn-outline:hover { background: var(--navy); color: #fff; }
+
+    /* ── CARD ────────────────────────────────── */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .card:hover { box-shadow: 0 12px 40px rgba(0,31,91,.1); transform: translateY(-3px); }
+
+    /* ── ID TAG ──────────────────────────────── */
+    .id-tag {
+      display: inline-flex;
+      font-family: 'JetBrains Mono', monospace; font-size: .6rem;
+      letter-spacing: .18em; text-transform: uppercase;
+      color: var(--navy); background: rgba(0,31,91,.07);
+      border: 1px solid rgba(0,31,91,.18); border-radius: 3px;
+      padding: .18rem .55rem;
+    }
+
+    /* ── DOMAIN TAG ──────────────────────────── */
+    .tag {
+      display: inline-flex;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: .64rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); background: var(--bg);
+      border: 1px solid var(--border); border-radius: 3px;
+      padding: .15rem .5rem;
+    }
+
+    /* ── SKILL CARD ──────────────────────────── */
+    .skill-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 2rem 1.75rem;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .skill-card:hover { box-shadow: 0 12px 40px rgba(0,31,91,.1); transform: translateY(-3px); }
+    .skill-icon {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: rgba(0,31,91,.08);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    /* ── ROUND BADGE ─────────────────────────── */
+    .round-badge {
+      font-family: 'Bebas Neue', sans-serif; font-size: .8rem;
+      letter-spacing: .35em; text-transform: uppercase; color: var(--red);
+      display: block; margin-bottom: .5rem;
+    }
+
+    /* ── BIG BG NUMBER ───────────────────────── */
+    .bg-num {
+      font-family: 'Bebas Neue', sans-serif; font-size: 7rem; line-height: 1;
+      color: var(--navy); opacity: .05;
+      position: absolute; top: .5rem; right: 1.25rem;
+      user-select: none; pointer-events: none;
+    }
+
+    /* ── PROJECT CARD ────────────────────────── */
+    .proj-card {
+      background: var(--white); border: 1px solid var(--border); border-radius: 14px;
+      overflow: hidden; display: flex; flex-direction: column;
+      transition: box-shadow .25s, transform .25s;
+    }
+    .proj-card:hover { box-shadow: 0 12px 40px rgba(0,31,91,.1); transform: translateY(-3px); }
+    .proj-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--navy) 0%, var(--red) 100%);
+    }
+
+    /* ── LOOM BTN ────────────────────────────── */
+    .loom-btn {
+      display: inline-flex; align-items: center; gap: .4rem;
+      font-family: 'Rajdhani', sans-serif; font-weight: 700;
+      font-size: .68rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--navy); background: rgba(0,31,91,.06);
+      border: 1px solid rgba(0,31,91,.22); border-radius: 4px;
+      padding: .4rem .85rem; cursor: pointer;
+      transition: background .2s, border-color .2s;
+    }
+    .loom-btn:hover { background: rgba(0,31,91,.12); border-color: rgba(0,31,91,.45); }
+
+    /* ── PSG SECTION ─────────────────────────── */
+    .psg-section { background: var(--navy); }
+    .psg-card {
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 14px; overflow: hidden;
+      transition: background .25s, transform .25s;
+    }
+    .psg-card:hover { background: rgba(255,255,255,.1); transform: translateY(-3px); }
+
+    /* ── CONTACT ─────────────────────────────── */
+    .field {
+      display: block; width: 100%;
+      background: var(--bg); border: 1.5px solid var(--border);
+      border-radius: 6px; color: var(--text);
+      font-size: .875rem; padding: .65rem .85rem; outline: none;
+      transition: border-color .2s; font-family: 'Inter', sans-serif;
+    }
+    .field:focus { border-color: var(--navy); }
+    .field-label {
+      font-family: 'JetBrains Mono', monospace; font-size: .58rem;
+      letter-spacing: .28em; text-transform: uppercase; color: var(--muted);
+      display: block; margin-bottom: .4rem;
+    }
+
+    /* ── DIVIDER ─────────────────────────────── */
+    .divider { height: 1px; background: var(--border); }
+
+    /* ── HERO DECOR LINE ─────────────────────── */
+    .red-line { width: 56px; height: 4px; background: var(--red); border-radius: 2px; }
+
+    /* ── FADE UP ─────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .6s ease-out both; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<header style="position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);border-bottom:1px solid var(--border);backdrop-filter:blur(16px)">
+  <div style="max-width:1120px;margin:0 auto;padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;height:60px">
+    <a href="#hero" style="display:flex;align-items:center;gap:.75rem;text-decoration:none">
+      <span class="f-disp" style="font-size:1.5rem;letter-spacing:.08em;color:var(--navy)">PALMER</span>
+      <span class="f-mono" style="font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--red);opacity:.8">Data × IA × Sport</span>
+    </a>
+    <nav style="display:flex;align-items:center;gap:1.75rem">
+      <a href="#hero"        class="nav-item" style="text-decoration:none">Accueil</a>
+      <a href="#about"       class="nav-item" style="text-decoration:none">Parcours</a>
+      <a href="#skills"      class="nav-item" style="text-decoration:none">Compétences</a>
+      <a href="#projects"    class="nav-item" style="text-decoration:none">Projets</a>
+      <a href="#psg-matches" class="nav-item" style="text-decoration:none">PSG</a>
+      <a href="#contact"     class="nav-item" style="text-decoration:none">Contact</a>
+    </nav>
+  </div>
+</header>
+
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section id="hero" style="background:var(--white);padding:5rem 0 4rem">
+  <div style="max-width:1120px;margin:0 auto;padding:0 1.25rem">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center" class="fade-up">
+
+      <!-- LEFT -->
+      <div>
+        <span class="label">// AI Applied to Business — Eugenia School</span>
+        <h1 class="h-hero">
+          ALEXANDRE<br>
+          <span style="color:var(--red)">PALMER</span>
+        </h1>
+        <div class="red-line" style="margin:1.5rem 0"></div>
+        <p style="font-size:1.05rem;line-height:1.75;color:var(--muted);max-width:420px">
+          Je construis des solutions data &amp; IA pour des problèmes business concrets.
+          Formé sur le terrain — stages, hackathons, Station&nbsp;F — avec la discipline du sport et l'ambition de toujours délivrer.
+        </p>
+        <div style="margin-top:1.5rem;display:flex;flex-wrap:wrap;gap:.5rem">
+          <span class="id-tag">MMA</span>
+          <span class="id-tag">PSG 2014</span>
+          <span class="id-tag">Station F</span>
+          <span class="id-tag">Eugenia School</span>
+        </div>
+        <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:.75rem">
+          <a href="#projects" class="btn-fill">Voir mes projets</a>
+          <a href="#contact"  class="btn-outline">Parler collab</a>
+        </div>
       </div>
-    </header>
 
-    <main>
-      <section id="hero" class="relative overflow-hidden py-24 lg:py-32">
-        <div
-          class="container mx-auto px-4 grid gap-12 lg:grid-cols-[1.1fr,0.9fr] items-center"
-        >
+      <!-- RIGHT: profile card -->
+      <div class="card" style="padding:2rem;border-top:4px solid var(--navy)">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:1.5rem">
           <div>
-            <h1
-              class="mt-6 text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight"
-            >
-              <span class="text-white">Je suis Alexandre Palmer</span>
-              <span class="text-blue-400">builder sport x tech</span>
-              qui mêle IA, data et énergie sportive.
-            </h1>
-            <p class="mt-6 text-lg text-slate-300 max-w-2xl">
-              En Bachelor “AI Applied to Business” chez Eugenia School, je
-              transforme des problématiques business en plans d’action data & IA.
-              Musculation, MMA et passion PSG m’apprennent la discipline et
-              l’impact visuel que j’applique à mes Business Deep Dives et
-              hackathons.
-            </p>
-            <div class="mt-8 flex flex-wrap gap-4">
-              <a
-                href="#projects"
-                class="inline-flex items-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow hover:-translate-y-0.5 transition"
-              >
-                Voir mes projets
-              </a>
-              <a
-                href="#contact"
-                class="inline-flex items-center rounded-full border border-white/20 px-6 py-3 text-sm font-semibold text-white hover:bg-white/10 transition"
-              >
-                Parler collab
-              </a>
-            </div>
+            <p class="f-mono" style="font-size:.58rem;color:var(--dim);letter-spacing:.28em;text-transform:uppercase">Profil</p>
+            <p class="f-disp" style="font-size:2rem;letter-spacing:.06em;color:var(--navy);margin-top:.2rem">PALMER</p>
+            <p class="f-mono" style="font-size:.58rem;color:var(--dim);letter-spacing:.2em;text-transform:uppercase;margin-top:.15rem">Paris, France</p>
           </div>
+          <span class="id-tag" style="margin-top:.25rem">AI × Business × Sport</span>
+        </div>
 
-          <div class="relative">
-            <div
-              class="absolute inset-0 blur-3xl bg-gradient-to-tr from-blue-600/40 via-rose-500/30 to-emerald-400/20"
-            ></div>
-            <div
-              class="relative rounded-3xl border border-white/10 bg-white/5 p-6 backdrop-blur"
-            >
-              <div class="flex flex-col gap-6">
-                <div class="rounded-2xl border border-white/10 bg-slate-900/60 p-4">
-                <p
-                  class="text-xs text-slate-400 uppercase tracking-[0.4em]"
-                >
-                  Routine sport x études
-                </p>
-                <h3 class="mt-3 text-2xl font-bold">Discipline sportive</h3>
-                <p class="mt-2 text-sm text-slate-300">
-                  Sessions muscu, sparring MMA, veille tech et projets data.
-                  Même exigence sur la préparation et la régularité.
-                </p>
-                </div>
+        <div class="divider" style="margin-bottom:1.5rem"></div>
 
-                <div class="grid grid-cols-2 gap-4">
-                  <div
-                    class="rounded-xl border border-white/10 bg-slate-900/50 p-4"
-                  >
-                    <p
-                      class="text-[11px] uppercase tracking-[0.3em] text-slate-400"
-                    >
-                      Muscu
-                    </p>
-                    <p class="mt-2 text-sm font-semibold text-white">
-                      2 séances/sem
-                    </p>
-                  </div>
-                  <div
-                    class="rounded-xl border border-white/10 bg-slate-900/50 p-4"
-                  >
-                    <p
-                      class="text-[11px] uppercase tracking-[0.3em] text-slate-400"
-                    >
-                      MMA
-                    </p>
-                    <p class="mt-2 text-sm font-semibold text-white">
-                      Sparring & Striking
-                    </p>
-                  </div>
-                  <div
-                    class="rounded-xl border border-white/10 bg-slate-900/50 p-4"
-                  >
-                    <p
-                      class="text-[11px] uppercase tracking-[0.3em] text-slate-400"
-                    >
-                      PSG
-                    </p>
-                    <p class="mt-2 text-sm font-semibold text-white">
-                      Fan depuis 2014
-                    </p>
-                  </div>
-                  <div
-                    class="rounded-xl border border-white/10 bg-slate-900/50 p-4"
-                  >
-                    <p
-                      class="text-[11px] uppercase tracking-[0.3em] text-slate-400"
-                    >
-                      Tech
-                    </p>
-                    <p class="mt-2 text-sm font-semibold text-white">
-                      No-Code + IA
-                    </p>
-                  </div>
-                </div>
-
-                <div
-                  class="rounded-2xl border border-white/10 bg-gradient-to-r from-blue-600/40 to-rose-500/40 p-4 text-sm"
-                >
-                  <p class="uppercase text-[11px] tracking-[0.35em] text-slate-200">
-                    Mission
-                  </p>
-                  <p class="mt-2 text-white">
-                    Construire des expériences qui mixent énergie sportive,
-                    intensité et ambition tech.
-                  </p>
-                </div>
-              </div>
-            </div>
+        <!-- Skills as clean list, no scores -->
+        <div style="display:flex;flex-direction:column;gap:1rem">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="f-ui" style="font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text)">Data &amp; IA</span>
+            <span class="f-mono" style="font-size:.6rem;color:var(--dim);letter-spacing:.15em">Looker · Sheets · ChatGPT</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="f-ui" style="font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text)">Business &amp; Pitch</span>
+            <span class="f-mono" style="font-size:.6rem;color:var(--dim);letter-spacing:.15em">Stratégie · Jury · Clients</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="f-ui" style="font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text)">No-code &amp; Automatisation</span>
+            <span class="f-mono" style="font-size:.6rem;color:var(--dim);letter-spacing:.15em">Miro · Canva · Make</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span class="f-ui" style="font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text)">Discipline Sportive</span>
+            <span class="f-mono" style="font-size:.6rem;color:var(--dim);letter-spacing:.15em">MMA · Muscu · PSG</span>
           </div>
         </div>
-      </section>
 
-      <section id="about" class="py-20">
-        <div
-          class="container mx-auto px-4 grid gap-12 lg:grid-cols-[1.1fr,0.9fr] items-center"
-        >
-          <div class="space-y-6">
-            <p class="text-sm uppercase tracking-[0.4em] text-blue-300">Profil</p>
-            <h2 class="text-3xl md:text-4xl font-bold">
-              Builder formé par le terrain : stages, BDD et hackathons.
-            </h2>
+        <div class="divider" style="margin:1.5rem 0"></div>
+        <p style="font-size:.82rem;color:var(--muted);font-style:italic;line-height:1.6">
+          « Même exigence sur le terrain sportif et sur les projets data. »
+        </p>
+      </div>
 
-            <div class="space-y-4">
-              <div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                <div class="text-sm text-slate-400 uppercase tracking-[0.3em]">
-                  2022 · Stage de seconde
-                </div>
-                <h3 class="mt-2 text-lg font-semibold text-white">
-                  EquiData Sport (start-up)
-                </h3>
-                <ul class="mt-2 space-y-1 text-sm text-slate-300">
-                  <li>• Marketing digital & data pour booster la visibilité.</li>
-                  <li>• Analyse de signaux marché pour alimenter les campagnes.</li>
-                </ul>
-              </div>
+    </div>
+  </div>
+</section>
 
-              <div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                <div class="text-sm text-slate-400 uppercase tracking-[0.3em]">
-                  2025 · Stage bachelor
-                </div>
-                <h3 class="mt-2 text-lg font-semibold text-white">
-                  Go Fusion (Station F)
-                </h3>
-                <ul class="mt-2 space-y-1 text-sm text-slate-300">
-                  <li>• Chargé de mission SEO, optimisation du contenu et reporting.</li>
-                  <li>• Collaboration avec les fondateurs sur la roadmap growth.</li>
-                </ul>
-              </div>
 
-              <div class="rounded-2xl border border-white/10 bg-white/5 p-4 backdrop-blur">
-                <div class="text-sm text-slate-400 uppercase tracking-[0.3em]">
-                  2024-2025
-                </div>
-                <h3 class="mt-2 text-lg font-semibold text-white">
-                  Business Deep Dives & hackathons
-                </h3>
-                <ul class="mt-2 space-y-1 text-sm text-slate-300">
-                  <li>• Histia, Carrefour, Geniathon Malt.</li>
-                  <li>• Analyse data, dashboards Looker et pitch decks.</li>
-                </ul>
-              </div>
-            </div>
-          </div>
+<!-- ══════════════════════════════════════
+     ABOUT — ROUNDS
+══════════════════════════════════════ -->
+<section id="about" style="padding:6rem 0">
+  <div style="max-width:1120px;margin:0 auto;padding:0 1.25rem">
+    <span class="label">// Parcours</span>
+    <h2 class="h-section" style="margin-bottom:2.5rem">
+      Construit sur le terrain.<br>
+      <span style="color:var(--red)">Round par round.</span>
+    </h2>
 
-          <div class="relative max-w-sm mx-auto">
-            <div
-              class="absolute inset-0 blur-3xl bg-gradient-to-tr from-blue-600/30 via-rose-500/20 to-emerald-400/20"
-            ></div>
-            <div
-              class="relative rounded-[32px] border border-white/10 bg-white/5 p-4 backdrop-blur"
-            >
-            <img
-              src="/images/alexandre-palmer.jpg"
-              alt="Portrait Alexandre Palmer"
-            class="aspect-[
-              <div class="mt-4 text-center space-y-1">
-                <p class="text-sm uppercase tracking-[0.4em] text-slate-400">
-                  Eugenia School
-                </p>
-                <p class="text-lg font-semibold text-white">
-                  Bachelor AI Applied to Business
-                </p>
-                <p class="text-sm text-slate-300">Promo en cours</p>
-              </div>
-            </div>
-          </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.25rem">
+
+      <div class="card" style="padding:1.75rem;position:relative;overflow:hidden">
+        <span class="bg-num">01</span>
+        <span class="round-badge">Round 01 · 2022</span>
+        <h3 class="f-ui" style="font-size:1.15rem;color:var(--navy);margin-bottom:.2rem">EquiData Sport</h3>
+        <p class="f-mono" style="font-size:.58rem;color:var(--dim);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.1rem">Start-up · Stage de seconde</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.65rem">
+          <li style="display:flex;gap:.6rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red);flex-shrink:0;margin-top:.1rem">▸</span>Marketing digital &amp; data pour booster la visibilité</li>
+          <li style="display:flex;gap:.6rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red);flex-shrink:0;margin-top:.1rem">▸</span>Analyse de signaux marché pour alimenter les campagnes</li>
+        </ul>
+      </div>
+
+      <div class="card" style="padding:1.75rem;position:relative;overflow:hidden">
+        <span class="bg-num">02</span>
+        <span class="round-badge">Round 02 · 2025</span>
+        <h3 class="f-ui" style="font-size:1.15rem;color:var(--navy);margin-bottom:.2rem">Go Fusion — Station F</h3>
+        <p class="f-mono" style="font-size:.58rem;color:var(--dim);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.1rem">Start-up · Stage bachelor</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.65rem">
+          <li style="display:flex;gap:.6rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red);flex-shrink:0;margin-top:.1rem">▸</span>SEO, optimisation de contenu et reporting</li>
+          <li style="display:flex;gap:.6rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red);flex-shrink:0;margin-top:.1rem">▸</span>Roadmap growth avec les fondateurs</li>
+        </ul>
+      </div>
+
+      <div class="card" style="padding:1.75rem;position:relative;overflow:hidden">
+        <span class="bg-num">03</span>
+        <span class="round-badge">Round 03 · 2024–2025</span>
+        <h3 class="f-ui" style="font-size:1.15rem;color:var(--navy);margin-bottom:.2rem">Hackathons &amp; BDD</h3>
+        <p class="f-mono" style="font-size:.58rem;color:var(--dim);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.1rem">Eugenia School · Compétitions</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.65rem">
+          <li style="display:flex;gap:.6rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red);flex-shrink:0;margin-top:.1rem">▸</span>Histia, Carrefour, Geniathon Malt</li>
+          <li style="display:flex;gap:.6rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red);flex-shrink:0;margin-top:.1rem">▸</span>Dashboards Looker Studio &amp; pitch decks</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     SKILLS
+══════════════════════════════════════ -->
+<section id="skills" style="padding:6rem 0;background:var(--white)">
+  <div style="max-width:1120px;margin:0 auto;padding:0 1.25rem">
+    <span class="label">// Compétences</span>
+    <h2 class="h-section" style="margin-bottom:.75rem">Ce que je mets<br><span style="color:var(--red)">sur le terrain.</span></h2>
+    <p style="font-size:.95rem;color:var(--muted);max-width:520px;line-height:1.7;margin-bottom:3rem">
+      Chaque mission est abordée comme une préparation sportive : structure, répétition, impact mesurable.
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.25rem">
+
+      <div class="skill-card">
+        <div class="skill-icon">
+          <svg width="22" height="22" fill="none" stroke="var(--navy)" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/>
+          </svg>
         </div>
-      </section>
+        <h3 class="f-ui" style="font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.75rem">Data &amp; IA</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">
+          <li style="display:flex;gap:.5rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red)">▸</span>Bases de données</li>
+          <li style="display:flex;gap:.5rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red)">▸</span>Looker Studio</li>
+          <li style="display:flex;gap:.5rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red)">▸</span>Workflows IA</li>
+        </ul>
+      </div>
 
-      <section id="skills" class="py-20">
-        <div class="container mx-auto px-4">
-          <div class="text-center max-w-3xl mx-auto">
-            <p class="text-sm uppercase tracking-[0.4em] text-rose-400">Compétences</p>
-            <h2 class="mt-4 text-3xl md:text-4xl font-bold">
-              Ce que je mets sur le terrain pour vos projets.
-            </h2>
-            <p class="mt-4 text-slate-300">
-              Bases solides en code/no-code, data, IA et storytelling business. Chaque mission est
-              travaillée comme une préparation sportive : structure, répétition, impact visuel.
-            </p>
-          </div>
-
-          <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            <div
-              class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur hover:-translate-y-1 transition-shadow duration-300 hover:shadow-xl hover:shadow-blue-500/10"
-            >
-              <h3 class="text-lg font-semibold text-white">
-                Bases du code & no-code
-              </h3>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                <li>• Automatisations IA / no-code</li>
-                <li>• Structuration via Google Sheets</li>
-              </ul>
-            </div>
-            <div
-              class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur hover:-translate-y-1 transition-shadow duration-300 hover:shadow-xl hover:shadow-blue-500/10"
-            >
-              <h3 class="text-lg font-semibold text-white">Data & IA</h3>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                <li>• Introduction aux bases de données</li>
-                <li>• Looker Studio & workflows IA</li>
-              </ul>
-            </div>
-            <div
-              class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur hover:-translate-y-1 transition-shadow duration-300 hover:shadow-xl hover:shadow-blue-500/10"
-            >
-              <h3 class="text-lg font-semibold text-white">Business & finances</h3>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                <li>• Marketing & finances</li>
-                <li>• Modèles économiques</li>
-              </ul>
-            </div>
-            <div
-              class="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur hover:-translate-y-1 transition-shadow duration-300 hover:shadow-xl hover:shadow-blue-500/10"
-            >
-              <h3 class="text-lg font-semibold text-white">
-                Pitch & communication
-              </h3>
-              <ul class="mt-4 space-y-2 text-sm text-slate-300">
-                <li>• Storytelling exécutif</li>
-                <li>• Pitch jury / clients</li>
-                <li>• Design de présentations</li>
-              </ul>
-            </div>
-          </div>
+      <div class="skill-card">
+        <div class="skill-icon">
+          <svg width="22" height="22" fill="none" stroke="var(--navy)" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+          </svg>
         </div>
-      </section>
+        <h3 class="f-ui" style="font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.75rem">Code &amp; No-code</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">
+          <li style="display:flex;gap:.5rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red)">▸</span>Automatisations IA</li>
+          <li style="display:flex;gap:.5rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red)">▸</span>Google Sheets avancé</li>
+        </ul>
+      </div>
 
-      <section id="projects" class="py-20">
-        <div class="container mx-auto px-4">
-          <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">
-            Projets <span class="text-blue-400">réalisés</span>
-          </h2>
-          <p class="text-center text-slate-300 mb-12 max-w-2xl mx-auto">
-            Une sélection de réalisations qui mixent énergie sportive et vision
-            data/IA.
+      <div class="skill-card">
+        <div class="skill-icon">
+          <svg width="22" height="22" fill="none" stroke="var(--navy)" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+          </svg>
+        </div>
+        <h3 class="f-ui" style="font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.75rem">Business</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">
+          <li style="display:flex;gap:.5rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red)">▸</span>Marketing &amp; finances</li>
+          <li style="display:flex;gap:.5rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red)">▸</span>Modèles économiques</li>
+        </ul>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">
+          <svg width="22" height="22" fill="none" stroke="var(--navy)" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+          </svg>
+        </div>
+        <h3 class="f-ui" style="font-size:1rem;letter-spacing:.1em;text-transform:uppercase;color:var(--navy);margin-bottom:.75rem">Pitch &amp; Comm</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:.5rem">
+          <li style="display:flex;gap:.5rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red)">▸</span>Storytelling exécutif</li>
+          <li style="display:flex;gap:.5rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red)">▸</span>Pitch jury &amp; clients</li>
+          <li style="display:flex;gap:.5rem;font-size:.875rem;color:var(--muted)"><span style="color:var(--red)">▸</span>Design de présentations</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     PROJECTS
+══════════════════════════════════════ -->
+<section id="projects" style="padding:6rem 0">
+  <div style="max-width:1120px;margin:0 auto;padding:0 1.25rem">
+    <span class="label">// Projets réalisés</span>
+    <h2 class="h-section" style="margin-bottom:.75rem">Sur le <span style="color:var(--red)">ring.</span></h2>
+    <p style="font-size:.95rem;color:var(--muted);max-width:480px;line-height:1.7;margin-bottom:3rem">
+      Une sélection de réalisations qui mixent rigueur data et vision business.
+    </p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.25rem">
+      <% projects.forEach(function(project) { %>
+      <article class="proj-card">
+        <div class="proj-bar"></div>
+        <div style="padding:1.5rem;flex:1;display:flex;flex-direction:column">
+
+          <% if (project.logo) { %>
+          <div style="height:68px;display:flex;align-items:center;justify-content:center;background:var(--bg);border-radius:8px;margin-bottom:1.25rem">
+            <img src="<%= project.logo %>" alt="<%= project.title %>" style="max-height:40px;max-width:60%;object-fit:contain">
+          </div>
+          <% } %>
+
+          <h3 class="f-ui" style="font-size:1.15rem;color:var(--navy);margin-bottom:.35rem"><%= project.title %></h3>
+
+          <p class="f-mono" style="font-size:.58rem;color:var(--dim);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.9rem">
+            <%= project.date %><% if(project.tools){ %> · <%= project.tools %><% } %>
           </p>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <% projects.forEach(function(project) { %>
-            <article
-              class="overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-sm hover:shadow-2xl hover:-translate-y-1 transition"
-            >
-              <div class="p-6">
-                <% if (project.logo) { %>
-                <div
-                  class="h-24 md:h-28 w-full flex items-center justify-center rounded-xl bg-gradient-to-r from-slate-900/40 via-slate-800/40 to-slate-900/40 mb-4"
-                >
-                  <img
-                    src="<%= project.logo %>"
-                    alt="<%= project.title %>"
-                    class="max-h-16 md:max-h-20 max-w-[70%] object-contain"
-                  />
-                </div>
-                <% } %>
-                <header class="mb-3">
-                  <div class="flex items-start justify-between gap-3">
-                    <h3 class="text-2xl font-bold text-white"><%= project.title %></h3>
-                  </div>
-                  <div class="mt-2 flex flex-wrap gap-2 text-sm text-slate-300">
-                    <span><%= project.date %></span>
-                    <% if (project.tools) { %>
-                    <span>• <%= project.tools %></span>
-                    <% } %>
-                  </div>
-                </header>
+          <p style="font-size:.875rem;color:var(--text);line-height:1.65;margin-bottom:.5rem"><%= project.description %></p>
+          <p style="font-size:.82rem;color:var(--muted);line-height:1.65;margin-bottom:1rem"><%= project.summary %></p>
 
-                <p class="text-slate-200 text-sm mb-4">
-                  <%= project.description %>
-                </p>
-                <p class="text-slate-300 text-sm mb-4">
-                  <%= project.summary %>
-                </p>
-
-                <% 
-                // Debug: vérifier si loomEmbedId existe
-                // console.log('Project:', project.title, 'loomEmbedId:', project.loomEmbedId);
-                
-                // Afficher le bouton si loomEmbedId existe
-                if (project.loomEmbedId) { 
-                  var aspectRatio = project.loomAspectRatio || 56.25;
-                  var safeTitle = String(project.title || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
-                %>
-                <div class="mb-4">
-                  <button
-                    type="button"
-                    onclick="openLoomModal('<%= project.loomEmbedId %>', '<%= aspectRatio %>', '<%= safeTitle %>')"
-                    class="w-full inline-flex items-center justify-center gap-2 rounded-lg border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-slate-300 hover:bg-white/10 hover:text-white transition"
-                  >
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                    </svg>
-                    <span>Voir la vidéo Loom</span>
-                  </button>
-                </div>
-                <% } %>
-
-                <div class="flex flex-wrap gap-2 mb-4">
-                  <% project.domains.forEach(function(domain) { %>
-                  <span
-                    class="inline-flex items-center rounded-full bg-white/10 px-3 py-1 text-xs font-semibold text-white"
-                  >
-                    <%= domain %>
-                  </span>
-                  <% }); %>
-                </div>
-
-                <details class="mt-2 group">
-                  <summary
-                    class="cursor-pointer text-sm text-blue-300 hover:text-blue-200"
-                  >
-                    Approche & résultats
-                  </summary>
-                  <div class="mt-3 space-y-4 text-sm text-slate-200">
-                    <p><strong>Intro :</strong> <%= project.sections.intro %></p>
-                    <div>
-                      <h4 class="font-semibold mb-1 text-white">Approche</h4>
-                      <ul class="list-disc list-inside space-y-1">
-                        <% project.sections.approach.forEach(function(step) { %>
-                        <li><%= step %></li>
-                        <% }); %>
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 class="font-semibold mb-1 text-white">Résultats</h4>
-                      <ul class="list-disc list-inside space-y-1">
-                        <% project.sections.results.forEach(function(result) { %>
-                        <li><%= result %></li>
-                        <% }); %>
-                      </ul>
-                    </div>
-                  </div>
-                </details>
-              </div>
-            </article>
-            <% }); %>
+          <% if (project.loomEmbedId) {
+            var ar = project.loomAspectRatio || 56.25;
+            var st = String(project.title||'').replace(/'/g,"\\'").replace(/"/g,'\\"');
+          %>
+          <div style="margin-bottom:1rem">
+            <button type="button" class="loom-btn" onclick="openLoom('<%= project.loomEmbedId %>','<%= ar %>','<%= st %>')">
+              <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Voir la vidéo
+            </button>
           </div>
+          <% } %>
+
+          <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:1rem">
+            <% project.domains.forEach(function(d){ %><span class="tag"><%= d %></span><% }) %>
+          </div>
+
+          <details style="margin-top:auto">
+            <summary style="cursor:pointer;font-family:'Rajdhani',sans-serif;font-weight:700;font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;color:var(--navy);list-style:none;user-select:none">
+              Approche &amp; résultats ▾
+            </summary>
+            <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:.85rem;font-size:.82rem;color:var(--muted)">
+              <p><strong style="color:var(--text)">Intro :</strong> <%= project.sections.intro %></p>
+              <div>
+                <p class="f-ui" style="font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:.5rem">Approche</p>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem">
+                  <% project.sections.approach.forEach(function(s){ %>
+                  <li style="display:flex;gap:.5rem"><span style="color:var(--navy);flex-shrink:0">▸</span><%= s %></li>
+                  <% }) %>
+                </ul>
+              </div>
+              <div>
+                <p class="f-ui" style="font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--navy);margin-bottom:.5rem">Résultats</p>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:.4rem">
+                  <% project.sections.results.forEach(function(r){ %>
+                  <li style="display:flex;gap:.5rem"><span style="color:#16a34a;flex-shrink:0">▸</span><%= r %></li>
+                  <% }) %>
+                </ul>
+              </div>
+            </div>
+          </details>
+
         </div>
-      </section>
+      </article>
+      <% }) %>
+    </div>
+  </div>
+</section>
 
-      <section id="psg-matches" class="py-20 relative overflow-hidden">
-        <div class="container mx-auto px-4">
-          <div
-            class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6"
-          >
-            <div>
-              <p class="text-sm uppercase tracking-[0.4em] text-red-400">
-                PSG
-              </p>
-              <h2 class="mt-4 text-3xl md:text-4xl font-bold">
-                Prochains matchs du Paris Saint-Germain.
-              </h2>
-            </div>
-            <span class="text-xs uppercase tracking-[0.4em] text-slate-400">
-              data source: api.football-data.org
-            </span>
-          </div>
 
-          <div class="mt-12">
-            <% if (psgMatches && psgMatches.length) { %>
-            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <% psgMatches.forEach(function(match, index) { %>
-              <%
-                const d = new Date(match.utcDate);
-                const dateStr = d.toLocaleDateString("fr-FR", {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                  timeZone: "Europe/Paris",
-                });
-                const timeStr = d.toLocaleTimeString("fr-FR", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  timeZone: "Europe/Paris",
-                });
-                const dayStr = d.toLocaleDateString("fr-FR", {
-                  weekday: "short",
-                  timeZone: "Europe/Paris",
-                });
-                const isHome = match.homeTeam.name.toLowerCase().includes('paris') || match.homeTeam.name.toLowerCase().includes('psg');
-                const opponent = isHome ? match.awayTeam.name : match.homeTeam.name;
-              %>
-              <article
-                class="group relative overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-slate-900/60 via-slate-800/40 to-slate-900/60 p-6 backdrop-blur-xl hover:-translate-y-2 hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 animate-fade-in-up"
-              >
-                <!-- Effet de brillance au survol -->
-                <div class="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-blue-500/10 to-rose-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <!-- Badge compétition -->
-                <div class="relative z-10 flex items-center justify-between mb-4">
-                  <span class="inline-flex items-center rounded-full bg-gradient-to-r from-blue-600/20 to-rose-500/20 border border-blue-500/30 px-3 py-1 text-[10px] uppercase tracking-[0.3em] font-semibold text-blue-300">
-                    <%= match.competition && match.competition.name
-                      ? match.competition.name
-                      : "Compétition" %>
-                  </span>
-                  <% if (isHome) { %>
-                  <span class="text-xs font-semibold text-red-400 bg-red-500/10 px-2 py-1 rounded-full border border-red-500/20">
-                    DOMICILE
-                  </span>
-                  <% } else { %>
-                  <span class="text-xs font-semibold text-slate-400 bg-slate-700/30 px-2 py-1 rounded-full border border-slate-600/30">
-                    EXTERIEUR
-                  </span>
-                  <% } %>
-                </div>
+<!-- ══════════════════════════════════════
+     PSG MATCHES — fond marine
+══════════════════════════════════════ -->
+<section id="psg-matches" class="psg-section" style="padding:6rem 0">
+  <div style="max-width:1120px;margin:0 auto;padding:0 1.25rem">
 
-                <!-- Date et heure -->
-                <div class="relative z-10 mb-5">
-                  <div class="flex items-center gap-2 text-slate-400 text-xs uppercase tracking-[0.2em] mb-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <span><%= dayStr %></span>
-                  </div>
-                  <p class="text-sm font-medium text-slate-200 mb-1">
-                    <%= dateStr %>
-                  </p>
-                  <p class="text-lg font-bold text-white">
-                    <%= timeStr %>
-                  </p>
-                </div>
-
-                <!-- Match -->
-                <div class="relative z-10 space-y-3">
-                  <div class="flex items-center justify-between gap-3">
-                    <div class="flex-1 text-right">
-                      <p class="text-sm font-semibold text-white leading-tight">
-                        <%= isHome ? 'PSG' : opponent %>
-                      </p>
-                    </div>
-                    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-blue-600/30 to-rose-500/30 border-2 border-white/20 flex items-center justify-center">
-                      <span class="text-xs font-black text-white">VS</span>
-                    </div>
-                    <div class="flex-1 text-left">
-                      <p class="text-sm font-semibold text-white leading-tight">
-                        <%= isHome ? opponent : 'PSG' %>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Stade -->
-                <% if (match.venue) { %>
-                <div class="relative z-10 mt-5 pt-4 border-t border-white/10">
-                  <div class="flex items-center gap-2 text-xs text-slate-400">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                    </svg>
-                    <span class="truncate"><%= match.venue %></span>
-                  </div>
-                </div>
-                <% } %>
-
-                <!-- Effet de bordure animée -->
-                <div class="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-r from-blue-600/0 via-blue-500/20 to-rose-500/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-              </article>
-              <% }); %>
-            </div>
-            <% } else { %>
-            <div class="text-center py-12 rounded-2xl border border-white/10 bg-white/5 backdrop-blur">
-              <div class="space-y-2">
-                <p class="text-slate-400">Les prochains matchs ne sont pas disponibles pour le moment.</p>
-                <p class="text-xs text-slate-500">Vérifiez la console du serveur pour plus de détails.</p>
-              </div>
-            </div>
-            <% } %>
-          </div>
-        </div>
-      </section>
-
-      <style>
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-fade-in-up {
-          animation: fadeInUp 0.8s ease-out both;
-        }
-        #psg-matches article:nth-child(1) {
-          animation-delay: 0.1s;
-        }
-        #psg-matches article:nth-child(2) {
-          animation-delay: 0.2s;
-        }
-        #psg-matches article:nth-child(3) {
-          animation-delay: 0.3s;
-        }
-      </style>
-
-      <section id="contact" class="py-20">
-        <div class="container mx-auto px-4 max-w-3xl">
-          <div class="text-center">
-            <p class="text-sm uppercase tracking-[0.4em] text-blue-300">
-              Contact
-            </p>
-            <h2 class="mt-4 text-3xl md:text-4xl font-bold">
-              Prêt à monter sur le ring pour votre projet.
-            </h2>
-            <p class="mt-4 text-slate-300 max-w-2xl mx-auto">
-              Dites-moi ce que vous voulez construire. On structure, on s’aligne,
-              on délivre.
-            </p>
-          </div>
-
-          <div
-            class="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6 md:p-8 backdrop-blur-xl"
-          >
-            <form
-              id="contact-form"
-              class="space-y-4"
-              action="https://formspree.io/f/mjklkyke"
-              method="POST"
-            >
-              <div class="grid gap-4 md:grid-cols-2">
-                <div class="space-y-1.5">
-                  <label class="text-sm font-medium text-slate-200" for="name"
-                    >Nom</label
-                  >
-                  <input
-                    id="name"
-                    name="name"
-                    required
-                    class="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                  />
-                </div>
-                <div class="space-y-1.5">
-                  <label class="text-sm font-medium text-slate-200" for="email"
-                    >Email</label
-                  >
-                  <input
-                    id="email"
-                    type="email"
-                    name="email"
-                    required
-                    class="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                  />
-                </div>
-              </div>
-
-              <div class="space-y-1.5">
-                <label class="text-sm font-medium text-slate-200" for="message"
-                  >Message</label
-                >
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="4"
-                  required
-                  class="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-white outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
-                ></textarea>
-              </div>
-
-              <button
-                type="submit"
-                class="inline-flex items-center rounded-full bg-gradient-to-r from-blue-600 to-rose-500 px-6 py-3 text-sm font-semibold text-white shadow shadow-blue-500/30 transition hover:-translate-y-0.5"
-              >
-                Envoyer
-              </button>
-            </form>
-
-            <div
-              class="mt-6 flex flex-wrap gap-6 justify-center items-center"
-            >
-              <a
-                href="tel:0664290311"
-                class="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-400/50 transition-all duration-300"
-              >
-                <img
-                  src="/images/logo_téléphone.jpg"
-                  alt="Téléphone"
-                  class="w-6 h-6 object-contain"
-                />
-                <span class="text-sm text-slate-300">06 64 29 03 11</span>
-              </a>
-              <a
-                href="mailto:alexandrepalmer06@gmail.com"
-                class="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-400/50 transition-all duration-300"
-              >
-                <img
-                  src="/images/logo_email.jpg"
-                  alt="Email"
-                  class="w-6 h-6 object-contain"
-                />
-                <span class="text-sm text-slate-300">alexandrepalmer06@gmail.com</span>
-              </a>
-              <a
-                href="https://www.linkedin.com/in/alexandre-palmer/"
-                target="_blank"
-                rel="noreferrer"
-                class="inline-flex items-center gap-3 px-4 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 hover:border-blue-400/50 transition-all duration-300"
-              >
-                <img
-                  src="/images/logo_linkedin.png"
-                  alt="LinkedIn"
-                  class="w-6 h-6 object-contain"
-                />
-                <span class="text-sm text-slate-300">alexandre-palmer</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="border-t border-white/10 py-8 mt-16">
-      <div
-        class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-3 text-sm text-slate-400"
-      >
-        <span>© <%= new Date().getFullYear() %> Alexandre Palmer • Sport x Tech.</span>
+    <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem;margin-bottom:3rem">
+      <div>
+        <span class="label" style="color:rgba(255,255,255,.4)">// PSG — Live Schedule</span>
+        <h2 class="h-section" style="color:#fff">
+          Prochains matchs du<br>
+          <span style="color:var(--red)">Paris S-G.</span>
+        </h2>
       </div>
-    </footer>
+      <span class="f-mono" style="font-size:.55rem;color:rgba(255,255,255,.2);letter-spacing:.25em;text-transform:uppercase">
+        source: api.football-data.org
+      </span>
+    </div>
 
-    <!-- Modal pour les vidéos Loom -->
-    <div
-      id="loom-modal"
-      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/80 backdrop-blur-sm"
-      onclick="closeLoomModal()"
-    >
-      <div
-        class="relative w-full max-w-5xl mx-4 bg-[#030712] rounded-2xl border border-white/10 shadow-2xl"
-        onclick="event.stopPropagation()"
-      >
-        <button
-          onclick="closeLoomModal()"
-          class="absolute -top-12 right-0 text-white hover:text-blue-400 transition-colors z-10"
-          aria-label="Fermer"
-        >
-          <svg
-            class="w-8 h-8"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            ></path>
-          </svg>
-        </button>
-        <div class="p-6">
-          <h3
-            id="loom-modal-title"
-            class="text-2xl font-bold text-white mb-4"
-          ></h3>
-          <div id="loom-container" class="relative w-full rounded-lg overflow-hidden border border-white/10"></div>
+    <% if (psgMatches && psgMatches.length) { %>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem">
+      <% psgMatches.forEach(function(match) {
+        const d = new Date(match.utcDate);
+        const dateStr = d.toLocaleDateString("fr-FR",{weekday:"long",day:"numeric",month:"long",year:"numeric",timeZone:"Europe/Paris"});
+        const timeStr = d.toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit",timeZone:"Europe/Paris"});
+        const dayStr  = d.toLocaleDateString("fr-FR",{weekday:"short",timeZone:"Europe/Paris"});
+        const isHome  = match.homeTeam.name.toLowerCase().includes('paris')||match.homeTeam.name.toLowerCase().includes('psg');
+        const opp     = isHome ? match.awayTeam.name : match.homeTeam.name;
+      %>
+      <article class="psg-card" style="padding:1.5rem">
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+          <span class="f-mono" style="font-size:.55rem;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.4);background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:3px;padding:.15rem .5rem">
+            <%= match.competition&&match.competition.name ? match.competition.name : "Compétition" %>
+          </span>
+          <span class="f-ui" style="font-size:.62rem;letter-spacing:.18em;text-transform:uppercase;color:<%= isHome ? '#E3000B' : 'rgba(255,255,255,.4)' %>">
+            <%= isHome ? 'DOMICILE' : 'EXTÉRIEUR' %>
+          </span>
         </div>
+
+        <p class="f-mono" style="font-size:.55rem;color:rgba(255,255,255,.3);letter-spacing:.18em;text-transform:uppercase;margin-bottom:.25rem"><%= dayStr %></p>
+        <p style="font-size:.85rem;color:rgba(255,255,255,.65);margin-bottom:.2rem"><%= dateStr %></p>
+        <p class="f-disp" style="font-size:2.4rem;color:#fff;line-height:1;margin-bottom:1.25rem"><%= timeStr %></p>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.85rem 0;border-top:1px solid rgba(255,255,255,.08);border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:<% if(match.venue){%>1rem<%}else{%>0<%}%>">
+          <p class="f-ui" style="font-size:.95rem;color:#fff;flex:1;text-align:right;line-height:1.2"><%= isHome ? 'PSG' : opp %></p>
+          <div style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span class="f-disp" style="font-size:.7rem;color:rgba(255,255,255,.7)">VS</span>
+          </div>
+          <p class="f-ui" style="font-size:.95rem;color:#fff;flex:1;text-align:left;line-height:1.2"><%= isHome ? opp : 'PSG' %></p>
+        </div>
+
+        <% if (match.venue) { %>
+        <div style="display:flex;align-items:center;gap:.4rem">
+          <svg width="11" height="11" fill="none" stroke="rgba(255,255,255,.3)" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+          </svg>
+          <span class="f-mono" style="font-size:.58rem;color:rgba(255,255,255,.3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><%= match.venue %></span>
+        </div>
+        <% } %>
+
+      </article>
+      <% }) %>
+    </div>
+    <% } else { %>
+    <div style="text-align:center;padding:3rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px">
+      <p class="f-mono" style="font-size:.75rem;color:rgba(255,255,255,.25)">// Données non disponibles pour le moment.</p>
+    </div>
+    <% } %>
+
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════
+     CONTACT
+══════════════════════════════════════ -->
+<section id="contact" style="padding:6rem 0;background:var(--white)">
+  <div style="max-width:680px;margin:0 auto;padding:0 1.25rem">
+    <span class="label">// Contact</span>
+    <h2 class="h-section" style="margin-bottom:.75rem">
+      Prêt à monter<br><span style="color:var(--red)">sur le ring.</span>
+    </h2>
+    <p style="font-size:.95rem;color:var(--muted);margin-bottom:2.5rem;line-height:1.7">
+      Dites-moi ce que vous voulez construire. On structure, on s'aligne, on délivre.
+    </p>
+
+    <div class="card" style="padding:2rem">
+      <form id="contact-form" action="https://formspree.io/f/mjklkyke" method="POST">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+          <div>
+            <label class="field-label" for="name">Nom</label>
+            <input id="name" name="name" required class="field">
+          </div>
+          <div>
+            <label class="field-label" for="email">Email</label>
+            <input id="email" name="email" type="email" required class="field">
+          </div>
+        </div>
+        <div style="margin-bottom:1.25rem">
+          <label class="field-label" for="message">Message</label>
+          <textarea id="message" name="message" rows="4" required class="field" style="resize:none"></textarea>
+        </div>
+        <button type="submit" class="btn-fill">Envoyer le message</button>
+      </form>
+
+      <div style="margin-top:1.75rem;padding-top:1.5rem;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center">
+        <a href="tel:0664290311" style="display:inline-flex;align-items:center;gap:.55rem;padding:.5rem .85rem;background:var(--bg);border:1px solid var(--border);border-radius:5px;text-decoration:none;transition:border-color .2s" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border)'">
+          <img src="/images/logo_téléphone.jpg" alt="Téléphone" style="width:17px;height:17px;object-fit:contain">
+          <span class="f-ui" style="font-size:.82rem;color:var(--muted)">06 64 29 03 11</span>
+        </a>
+        <a href="mailto:alexandrepalmer06@gmail.com" style="display:inline-flex;align-items:center;gap:.55rem;padding:.5rem .85rem;background:var(--bg);border:1px solid var(--border);border-radius:5px;text-decoration:none;transition:border-color .2s" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border)'">
+          <img src="/images/logo_email.jpg" alt="Email" style="width:17px;height:17px;object-fit:contain">
+          <span class="f-ui" style="font-size:.82rem;color:var(--muted)">alexandrepalmer06@gmail.com</span>
+        </a>
+        <a href="https://www.linkedin.com/in/alexandre-palmer/" target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:.55rem;padding:.5rem .85rem;background:var(--bg);border:1px solid var(--border);border-radius:5px;text-decoration:none;transition:border-color .2s" onmouseover="this.style.borderColor='var(--navy)'" onmouseout="this.style.borderColor='var(--border)'">
+          <img src="/images/logo_linkedin.png" alt="LinkedIn" style="width:17px;height:17px;object-fit:contain">
+          <span class="f-ui" style="font-size:.82rem;color:var(--muted)">alexandre-palmer</span>
+        </a>
       </div>
     </div>
-  </body>
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      var form = document.getElementById("contact-form");
-      if (!form) return;
+  </div>
+</section>
 
-      form.addEventListener("submit", function (event) {
-        event.preventDefault();
 
-        var formData = new FormData(form);
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer style="background:var(--navy);padding:1.75rem 0">
+  <div style="max-width:1120px;margin:0 auto;padding:0 1.25rem;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.75rem">
+    <span class="f-mono" style="font-size:.58rem;color:rgba(255,255,255,.3);letter-spacing:.25em;text-transform:uppercase">
+      © <%= new Date().getFullYear() %> Alexandre Palmer · Data × IA × Sport
+    </span>
+    <span class="f-mono" style="font-size:.58rem;color:rgba(227,0,11,.6);letter-spacing:.2em;text-transform:uppercase">
+      PARIS, FR
+    </span>
+  </div>
+</footer>
 
-        fetch("https://formspree.io/f/mjklkyke", {
-          method: "POST",
-          body: formData,
-          headers: { Accept: "application/json" },
-        })
-          .then(function (response) {
-            if (response.ok) {
-              alert("Merci pour ton message !");
-              form.reset();
-            } else {
-              alert("Une erreur est survenue, merci de réessayer.");
-            }
-          })
-          .catch(function () {
-            alert("Une erreur est survenue, merci de réessayer.");
-          });
-      });
-    });
 
-    // Fonctions pour la modal Loom
-    function openLoomModal(embedId, aspectRatio, title) {
-      try {
-        var modal = document.getElementById("loom-modal");
-        var container = document.getElementById("loom-container");
-        var titleEl = document.getElementById("loom-modal-title");
+<!-- ══════════════════════════════════════
+     LOOM MODAL
+══════════════════════════════════════ -->
+<div id="loom-modal" style="display:none;position:fixed;inset:0;z-index:100;background:rgba(0,31,91,.85);backdrop-filter:blur(8px);align-items:center;justify-content:center" onclick="closeLoom()">
+  <div style="position:relative;width:100%;max-width:900px;margin:0 1rem;background:var(--white);border-radius:14px;overflow:hidden" onclick="event.stopPropagation()">
+    <button onclick="closeLoom()" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--navy);cursor:pointer;font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:.15em;z-index:1">FERMER ✕</button>
+    <div style="padding:1.75rem">
+      <h3 id="loom-title" class="f-disp" style="font-size:1.6rem;color:var(--navy);margin-bottom:1rem"></h3>
+      <div id="loom-body" style="border-radius:8px;overflow:hidden;border:1px solid var(--border)"></div>
+    </div>
+  </div>
+</div>
 
-        if (!modal || !container || !titleEl) {
-          console.error("Éléments modal non trouvés");
-          return;
-        }
 
-        if (!embedId) {
-          console.error("ID Loom invalide");
-          return;
-        }
+<script>
+/* contact form */
+document.addEventListener('DOMContentLoaded', function() {
+  var form = document.getElementById('contact-form');
+  if (!form) return;
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    fetch('https://formspree.io/f/mjklkyke', {
+      method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' }
+    }).then(function(r) {
+      if (r.ok) { alert('Merci pour ton message !'); form.reset(); }
+      else alert('Une erreur est survenue, merci de réessayer.');
+    }).catch(function() { alert('Une erreur est survenue, merci de réessayer.'); });
+  });
+});
 
-        // Définir le titre
-        titleEl.textContent = title || "Vidéo Loom";
-        
-        // Créer l'iframe avec le bon ratio
-        var ratio = parseFloat(aspectRatio) || 56.25;
-        container.innerHTML = '<div style="position: relative; padding-bottom: ' + ratio + '%; height: 0;"><iframe src="https://www.loom.com/embed/' + embedId + '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>';
-        
-        // Afficher la modal
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-        document.body.style.overflow = "hidden";
-      } catch (e) {
-        console.error("Erreur ouverture modal Loom:", e);
-        alert("Impossible de charger la vidéo Loom. Veuillez réessayer.");
-      }
-    }
-
-    function closeLoomModal() {
-      try {
-        var modal = document.getElementById("loom-modal");
-        var container = document.getElementById("loom-container");
-
-        if (modal && container) {
-          modal.classList.add("hidden");
-          modal.classList.remove("flex");
-          container.innerHTML = "";
-          document.body.style.overflow = "";
-        }
-      } catch (e) {
-        console.error("Erreur fermeture modal Loom:", e);
-      }
-    }
-
-    // Fermer la modal avec la touche Escape
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        closeLoomModal();
-      }
-    });
-  </script>
+/* loom modal */
+function openLoom(id, ratio, title) {
+  var modal = document.getElementById('loom-modal');
+  var body  = document.getElementById('loom-body');
+  var ttl   = document.getElementById('loom-title');
+  if (!modal||!body||!ttl||!id) return;
+  ttl.textContent = title || 'Vidéo';
+  var r = parseFloat(ratio)||56.25;
+  body.innerHTML = '<div style="position:relative;padding-bottom:'+r+'%;height:0"><iframe src="https://www.loom.com/embed/'+id+'" frameborder="0" allowfullscreen style="position:absolute;top:0;left:0;width:100%;height:100%"></iframe></div>';
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeLoom() {
+  var modal = document.getElementById('loom-modal');
+  var body  = document.getElementById('loom-body');
+  if (modal) { modal.style.display = 'none'; document.body.style.overflow = ''; }
+  if (body)  body.innerHTML = '';
+}
+document.addEventListener('keydown', function(e) { if (e.key==='Escape') closeLoom(); });
+</script>
+</body>
 </html>
-
-

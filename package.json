@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/palmer-alex75/Portfolio#readme",
   "dependencies": {
+    "dotenv": "^17.4.2",
     "ejs": "^3.1.10",
     "express": "^5.1.0"
   }

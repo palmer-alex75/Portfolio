@@ -327,7 +327,7 @@
             data/IA.
           </p>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             <% projects.forEach(function(project) { %>
             <article class="group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-slate-900/70 to-[#030712] shadow-sm hover:shadow-2xl hover:-translate-y-1.5 hover:border-white/20 transition-all duration-500">
               <!-- Accent ligne top -->
@@ -369,6 +369,23 @@
                 <p class="text-slate-200 text-sm leading-relaxed mb-2"><%= project.description %></p>
                 <p class="text-slate-400 text-sm leading-relaxed mb-5"><%= project.summary %></p>
 
+                <!-- Lien SaaS -->
+                <% if (project.link) { %>
+                <div class="mb-3">
+                  <a
+                    href="<%= project.link %>"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="w-full inline-flex items-center justify-center gap-2.5 rounded-xl border border-emerald-500/30 bg-gradient-to-r from-emerald-600/10 to-teal-600/10 px-4 py-2.5 text-sm font-medium text-emerald-300 hover:from-emerald-600/20 hover:to-teal-600/20 hover:border-emerald-400/50 hover:text-white transition-all duration-300"
+                  >
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                    </svg>
+                    Tester le SaaS en live
+                  </a>
+                </div>
+                <% } %>
+
                 <!-- Bouton Loom -->
                 <% if (project.loomEmbedId) {
                   var aspectRatio = project.loomAspectRatio || 56.25;
@@ -399,9 +416,9 @@
                 </div>
 
                 <!-- Approche & résultats -->
-                <details class="group mt-1">
+                <details class="mt-1">
                   <summary class="cursor-pointer list-none flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors select-none">
-                    <svg class="w-4 h-4 transition-transform duration-300 group-open:rotate-180 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="details-chevron w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                     </svg>
                     Approche & résultats
@@ -599,6 +616,12 @@
         }
         #psg-matches article:nth-child(3) {
           animation-delay: 0.3s;
+        }
+        .details-chevron {
+          transition: transform 0.3s ease;
+        }
+        details[open] > summary .details-chevron {
+          transform: rotate(180deg);
         }
       </style>
 

@@ -66,6 +66,35 @@ const projects = [
     },
   },
   {
+    title: "AdvisorAI — Investor Intelligence",
+    description:
+      "SaaS d'analyse investisseur alimentée par l'IA pour évaluer les idées business comme un VC professionnel en 10-15 secondes.",
+    summary:
+      "Dashboard complet avec scoring, taille marché, benchmark concurrentiel, évaluation d'équipe et prévisions financières générées via ingénierie de prompt optimisée.",
+    domains: ["IA", "Développement", "Prompt Engineering", "Multi-langue"],
+    logo: "/images/advisorai-logo.svg",
+    date: "2026",
+    tools: "Next.js 16, React 19, TypeScript, Mistral AI",
+    link: "https://app-investisseur-advisor.vercel.app/",
+    loomVideo: "https://www.loom.com/share/815e50e6179d44e491101c268430ea57",
+    loomEmbedId: "815e50e6179d44e491101c268430ea57",
+    loomAspectRatio: 56.25,
+    sections: {
+      intro:
+        "AdvisorAI est un SaaS fullstack conçu pour simuler l'analyse d'un investisseur VC professionnel via un pipeline de prompt engineering optimisé.",
+      approach: [
+        "Ingénierie de prompt multi-dimensionnelle : scoring VC réaliste avec règles explicites (TAM, équipe, exécution).",
+        "Architecture bilingue (FR/EN) avec cache localStorage et traduction instantanée via API dédiée.",
+        "System prompt qualité : prompts qui demandent au modèle d'être un senior VC avec règles de scoring précises et reproductibles.",
+      ],
+      results: [
+        "Dashboard investisseur 9 sections (pitch, marché, équipe, financials, SWOT, roadmap, recommandations).",
+        "Support multi-langue transparent : cache des analyses, traduction sous 5s au changement de langue.",
+        "Analyses de qualité professionnelle : scores réalistes (45-85 en majorité), pas d'inflation de verdicts.",
+      ],
+    },
+  },
+  {
     title: "BDD Carrefour",
     description:
       "Analyse data-driven des achats non-alimentaires G6 pour révéler des leviers d'économies.",

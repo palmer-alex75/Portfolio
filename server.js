@@ -9,31 +9,34 @@ const FOOTBALL_API_KEY =
 // Données projets (reprennent le contenu de Projects.tsx)
 const projects = [
   {
-    title: "BDD Histia",
+    title: "Equidata Sport — Stratégie SEO & GEO",
     description:
-      "Outil de veille automatisé pour libérer du temps analyste et suivre 70+ indicateurs clés sur les startups.",
+      "Audit stratégique SEO/GEO réalisé pour Equidata Sport, une startup française spécialisée dans l'IA prédictive appliquée au saut d'obstacles haut niveau.",
     summary:
-      "Recherche ciblée, scoring de pertinence et restitution instantanée pour alimenter les Business Deep Dives.",
-    domains: ["Travail en équipe", "Data", "Communication", "Pitch"],
-    logo: "/images/histia-logo-2.jpg",
-    date: "12/02/2025",
-    tools: "Google Sheets, ChatGPT, Looker Studio, Canva",
-    loomVideo: "https://www.loom.com/share/49ce4410ce5e4cee8b911aaa7e432923",
-    loomEmbedId: "49ce4410ce5e4cee8b911aaa7e432923",
+      "Analyse du positionnement Google et IA (ChatGPT, Claude, Gemini), identification des opportunités de visibilité et conception d'un système de production de contenu industrialisé via agents IA.",
+    domains: ["Stratégie", "SEO & GEO", "IA", "Audit", "Pitch"],
+    logo: "/images/equidata-logo.svg",
+    date: "Avril 2026",
+    tools: "Dust, ChatGPT, SE Ranking, Canva",
+    loomVideo: "https://www.loom.com/share/a6fc3a2a012b4138875515956414f976",
+    loomEmbedId: "a6fc3a2a012b4138875515956414f976",
     loomAspectRatio: 56.25,
     sections: {
       intro:
-        "Le projet Histia visait à automatiser la collecte et la synthèse d'information pour des études de marché plus rapides.",
+        "Le projet visait à transformer Equidata Sport en référence informationnelle et IA du marché du CSO haut niveau — être citée par les LLMs, pas seulement bien rankée.",
       approach: [
-        "Recherche automatisée et ciblée d'informations fiables et à jour.",
-        "Tri et scoring de la pertinence des données selon chaque niche.",
-        "Mise en forme structurée pour exploitation immédiate.",
-        "Étude de marché qualitative (20+ entretiens) pour orienter la stratégie commerciale.",
+        "Audit SEO : analyse du ranking, mots-clés stratégiques et visibilité concurrentielle (SE Ranking).",
+        "Audit GEO : tests de présence sur 3 LLMs via 5 prompts ciblés (ChatGPT, Claude, Gemini).",
+        "Identification des opportunités éditoriales : 4 piliers (éducatif, actualité, data, preuve).",
+        "Conception d'un système multi-agents IA (Dust) pour industrialiser la production de contenus SEO/GEO structurés.",
+        "Structuration d'une roadmap 6 mois avec KPIs de visibilité Google et citabilité IA.",
       ],
       results: [
-        "Outil de veille couvrant 70+ indicateurs (emplois, financements, actu).",
-        "Priorisation des niches via Google Sheets + présentation exécutive.",
-        "Temps analyste réduit sur les tâches à faible valeur ajoutée.",
+        "Mise en évidence d'une quasi-invisibilité SEO/GEO malgré une technologie différenciante (1/20 mots-clés positionnés).",
+        "Identification d'une catégorie libre : aucun concurrent ne combine IA prédictive + CSO + détection de potentiel.",
+        "Stratégie éditoriale orientée intention de recherche investisseur et citabilité IA.",
+        "Architecture de production automatisée : agent cerveau projet → agent rédacteur → article SEO/GEO optimisé.",
+        "Positionnement stratégique : faire d'Equidata \"la réponse\" plutôt qu'un simple site visible.",
       ],
     },
   },

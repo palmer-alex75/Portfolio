@@ -425,6 +425,25 @@
                 </div>
                 <% } %>
 
+                <!-- Bouton vidéo de démo (fichier local) -->
+                <% if (project.video) {
+                  var safeVideoTitle = String(project.title || '').replace(/'/g, "\\'").replace(/"/g, '\\"');
+                %>
+                <div class="mb-5">
+                  <button
+                    type="button"
+                    onclick="openVideoModal('<%= project.video %>', '<%= safeVideoTitle %>')"
+                    class="w-full inline-flex items-center justify-center gap-2.5 rounded-xl border border-violet-500/30 bg-gradient-to-r from-violet-600/10 to-blue-600/10 px-4 py-2.5 text-sm font-medium text-violet-300 hover:from-violet-600/20 hover:to-blue-600/20 hover:border-violet-400/50 hover:text-white transition-all duration-300"
+                  >
+                    <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Voir la démo
+                  </button>
+                </div>
+                <% } %>
+
                 <!-- Tags -->
                 <div class="flex flex-wrap gap-2 mb-5">
                   <% project.domains.forEach(function(domain) { %>
@@ -494,9 +513,6 @@
                 Prochains matchs du Paris Saint-Germain.
               </h2>
             </div>
-            <span class="text-xs uppercase tracking-[0.4em] text-slate-400">
-              data source: api.football-data.org
-            </span>
           </div>
 
           <div class="mt-12">
@@ -867,6 +883,28 @@
         console.error("Erreur ouverture modal Loom:", e);
         alert("Impossible de charger la vidéo Loom. Veuillez réessayer.");
       }
+    }
+
+    // Vidéo de démo locale, affichée dans la même modal
+    function openVideoModal(src, title) {
+      var modal = document.getElementById("loom-modal");
+      var container = document.getElementById("loom-container");
+      var titleEl = document.getElementById("loom-modal-title");
+      if (!modal || !container || !titleEl || !src) return;
+
+      titleEl.textContent = title || "Démo";
+      container.innerHTML = "";
+      var video = document.createElement("video");
+      video.src = src;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.style.cssText = "display:block;width:100%;max-height:75vh;background:#000;object-fit:contain;";
+      container.appendChild(video);
+
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      document.body.style.overflow = "hidden";
     }
 
     function closeLoomModal() {

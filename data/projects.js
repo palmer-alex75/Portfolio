@@ -39,6 +39,7 @@ const projects = [
     tools: "Figma, IA",
     link: "https://formai-neon-ten.vercel.app/",
     linkLabel: "Tester FormAI en live (sur mobile)",
+    video: "/videos/formai-demo.mp4",
     sections: {
       intro:
         "FormAI vise le pratiquant débutant ou intermédiaire qui s'entraîne seul : devant une machine jamais utilisée, il ne sait ni quoi travailler, ni s'il le fait bien.",

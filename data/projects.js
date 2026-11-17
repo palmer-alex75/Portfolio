@@ -92,7 +92,7 @@ const projects = [
     domains: ["IA", "Développement", "Simulateurs", "UX"],
     logo: "/images/fleur-de-la-paix-logo.svg",
     date: "2026",
-    link: "https://la-fleur-de-la-paix.vercel.app/",
+    link: "https://la-fleur-de-la-paix-flax.vercel.app/",
     sections: {
       intro:
         "La Fleur de la Paix est un projet fictif : un site vitrine d'événementiel mariage transformé en expérience interactive qui aide les couples à se projeter et à décider.",
